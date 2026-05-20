@@ -1,0 +1,57 @@
+import {
+  Boxes,
+  LayoutDashboard,
+  ScrollText,
+  ChartColumn,
+  User,
+} from 'lucide-react'
+
+import { ROLES } from '@/lib/roles'
+
+export const menus = [
+  {
+    label: 'Dashboard',
+    href: '/dashboard',
+    icon: LayoutDashboard,
+    roles: [
+      ROLES.OWNER,
+      ROLES.DISTRIBUTOR,
+      ROLES.RETAIL,
+    ],
+  },
+  {
+    label: 'Inventory',
+    href: '/inventory',
+    icon: Boxes,
+    roles: [
+      ROLES.OWNER,
+      ROLES.DISTRIBUTOR,
+      ROLES.RETAIL,
+    ],
+  },
+  {
+    label: 'Ledger',
+    href: '/ledger',
+    icon: ScrollText,
+    roles: [
+      ROLES.OWNER,
+      ROLES.DISTRIBUTOR,
+    ],
+  },
+  {
+    label: 'Analytics',
+    href: '/analytics',
+    icon: ChartColumn,
+    roles: [ROLES.OWNER],
+  },
+  {
+    label: 'Profile',
+    href: '/profile',
+    icon: User,
+    roles: [
+      ROLES.OWNER,
+      ROLES.DISTRIBUTOR,
+      ROLES.RETAIL,
+    ],
+  },
+]
