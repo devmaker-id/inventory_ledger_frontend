@@ -7,39 +7,76 @@ import {
 
 import { StatCard } from '@/components/dashboard/stat-card'
 
-import { getDashboardStats } from '@/services/dashboard.service'
+import {
+  getSummary,
+  getLowStock,
+  getRecentTransactions,
+} from '@/services/analytics.service'
 
-type DashboardStats = {
+type Summary = {
   totalInventory: number
   totalRetail: number
   totalDistributor: number
   totalTransactions: number
 }
 
+type LowStock = {
+  id: number
+  name: string
+  stock: number
+}
+
+type Transaction = {
+  id: number
+  type: string
+  quantity: number
+  createdAt: string
+}
+
 export default function DashboardPage() {
-  const [stats, setStats] =
-    useState<DashboardStats | null>(
-      null,
-    )
+  const [summary, setSummary] =
+    useState<Summary | null>(null)
+
+  const [lowStock, setLowStock] =
+    useState<LowStock[]>([])
+
+  const [
+    transactions,
+    setTransactions,
+  ] = useState<Transaction[]>([])
 
   const [loading, setLoading] =
     useState(true)
 
   useEffect(() => {
-    const fetchStats = async () => {
-      try {
-        const data =
-          await getDashboardStats()
+    const fetchDashboard =
+      async () => {
+        try {
+          const [
+            summaryData,
+            lowStockData,
+            transactionData,
+          ] = await Promise.all([
+            getSummary(),
+            getLowStock(),
+            getRecentTransactions(),
+          ])
 
-        setStats(data)
-      } catch (error) {
-        console.error(error)
-      } finally {
-        setLoading(false)
+          setSummary(summaryData)
+
+          setLowStock(lowStockData)
+
+          setTransactions(
+            transactionData,
+          )
+        } catch (error) {
+          console.error(error)
+        } finally {
+          setLoading(false)
+        }
       }
-    }
 
-    fetchStats()
+    fetchDashboard()
   }, [])
 
   if (loading) {
@@ -64,37 +101,106 @@ export default function DashboardPage() {
 
       <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
         <StatCard
-          title="Total Inventory"
+          title="Inventory"
           value={
-            stats?.totalInventory || 0
+            summary?.totalInventory ||
+            0
           }
-          description="Registered products"
         />
 
         <StatCard
-          title="Total Retail"
+          title="Retail"
           value={
-            stats?.totalRetail || 0
+            summary?.totalRetail || 0
           }
-          description="Active retail stores"
         />
 
         <StatCard
-          title="Total Distributor"
+          title="Distributor"
           value={
-            stats?.totalDistributor || 0
+            summary?.totalDistributor ||
+            0
           }
-          description="Registered distributors"
         />
 
         <StatCard
           title="Transactions"
           value={
-            stats?.totalTransactions ||
+            summary?.totalTransactions ||
             0
           }
-          description="This month"
         />
+      </div>
+
+      <div className="grid gap-6 lg:grid-cols-2">
+        <div className="rounded-2xl border bg-white p-6">
+          <h2 className="mb-4 text-lg font-semibold">
+            Low Stock
+          </h2>
+
+          <div className="space-y-4">
+            {lowStock.length === 0 && (
+              <p className="text-sm text-muted-foreground">
+                No low stock items
+              </p>
+            )}
+
+            {lowStock.map((item) => (
+              <div
+                key={item.id}
+                className="flex items-center justify-between rounded-xl border p-4"
+              >
+                <div>
+                  <p className="font-medium">
+                    {item.name}
+                  </p>
+                </div>
+
+                <div className="text-sm font-semibold text-red-500">
+                  {item.stock}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="rounded-2xl border bg-white p-6">
+          <h2 className="mb-4 text-lg font-semibold">
+            Recent Transactions
+          </h2>
+
+          <div className="space-y-4">
+            {transactions.length ===
+              0 && (
+              <p className="text-sm text-muted-foreground">
+                No transactions
+              </p>
+            )}
+
+            {transactions.map((trx) => (
+              <div
+                key={trx.id}
+                className="flex items-center justify-between rounded-xl border p-4"
+              >
+                <div>
+                  <p className="font-medium">
+                    {trx.type}
+                  </p>
+
+                  <p className="text-sm text-muted-foreground">
+                    {new Date(
+                      trx.createdAt,
+                    ).toLocaleString()}
+                  </p>
+                </div>
+
+                <div className="font-semibold">
+                  {trx.quantity}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   )
