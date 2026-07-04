@@ -1,31 +1,49 @@
+'use client'
+
 import { create } from 'zustand'
+import { persist } from 'zustand/middleware'
 
-import { AuthUser } from '@/types/auth'
+import type { AuthUser } from '@/types/auth'
 
-type AuthStore = {
+interface AuthState {
+  token: string | null
   user: AuthUser | null
-
-  setUser: (user: AuthUser) => void
-
+  isAuthenticated: boolean
+  setToken: (token: string | null) => void
+  setUser: (user: AuthUser | null) => void
   logout: () => void
 }
 
 export const useAuthStore =
-  create<AuthStore>((set) => ({
-    user: null,
+  create<AuthState>()(
+    persist(
+      (set) => ({
+        token: null,
 
-    setUser: (user) =>
-      set({
-        user,
-      }),
-
-    logout: () => {
-      localStorage.removeItem('token')
-
-      set({
         user: null,
-      })
 
-      window.location.href = '/login'
-    },
-  }))
+        isAuthenticated: false,
+
+        setToken: (token) =>
+          set({
+            token,
+            isAuthenticated: !!token,
+          }),
+
+        setUser: (user) =>
+          set({
+            user,
+          }),
+
+        logout: () =>
+          set({
+            token: null,
+            user: null,
+            isAuthenticated: false,
+          }),
+      }),
+      {
+        name: 'auth-storage',
+      },
+    ),
+  )

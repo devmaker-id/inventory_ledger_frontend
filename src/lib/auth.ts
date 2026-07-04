@@ -1,9 +1,11 @@
+import { useAuthStore } from '@/store/auth.store'
+
 export function getToken() {
   if (typeof window === 'undefined') {
     return null
   }
 
-  return localStorage.getItem('token')
+  return useAuthStore.getState().token
 }
 
 export function isAuthenticated() {
@@ -11,7 +13,7 @@ export function isAuthenticated() {
 }
 
 export function logout() {
-  localStorage.removeItem('token')
+  useAuthStore.getState().logout()
 
   window.location.href = '/login'
 }
