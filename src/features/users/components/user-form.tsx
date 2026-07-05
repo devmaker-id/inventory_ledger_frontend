@@ -1,6 +1,10 @@
 'use client'
 
-import { UseFormReturn } from 'react-hook-form'
+import {
+  FieldValues,
+  Path,
+  UseFormReturn,
+} from 'react-hook-form'
 
 import {
   Form,
@@ -27,11 +31,14 @@ import { ROLES } from '@/lib/roles'
 
 import type { CreateUserSchema } from '../schemas/create-user.schema'
 
-type UserFormProps = {
-  form: UseFormReturn<CreateUserSchema>
+type UserFormProps<
+  T extends FieldValues,
+> = {
+  form: UseFormReturn<T>
   loading?: boolean
   submitLabel?: string
-  onSubmit: (values: CreateUserSchema) => void
+  showPassword?: boolean
+  onSubmit: (values: T) => void
 }
 
 const roleOptions = [
@@ -49,13 +56,16 @@ const roleOptions = [
   },
 ]
 
-export function UserForm({
+export function UserForm<
+  T extends FieldValues,
+>({
   form,
   loading = false,
   submitLabel = 'Simpan',
+  showPassword = true,
   onSubmit,
-}: UserFormProps) {
-  const roleId = form.watch('roleId')
+}: UserFormProps<T>) {
+  const roleId = form.watch('roleId' as Path<T>)
 
   return (
     <Form {...form}>
@@ -65,7 +75,7 @@ export function UserForm({
       >
         <FormField
           control={form.control}
-          name="name"
+          name={"name" as Path<T>}
           render={({ field }) => (
             <FormItem>
               <FormLabel>Nama</FormLabel>
@@ -84,7 +94,7 @@ export function UserForm({
 
         <FormField
           control={form.control}
-          name="email"
+          name={"email" as Path<T>}
           render={({ field }) => (
             <FormItem>
               <FormLabel>Email</FormLabel>
@@ -102,29 +112,31 @@ export function UserForm({
           )}
         />
 
+        {showPassword && (
+          <FormField
+            control={form.control}
+            name={"password" as Path<T>}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Password</FormLabel>
+
+                <FormControl>
+                  <Input
+                    type="password"
+                    placeholder="Minimal 8 karakter"
+                    {...field}
+                  />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )}
+
         <FormField
           control={form.control}
-          name="password"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Password</FormLabel>
-
-              <FormControl>
-                <Input
-                  type="password"
-                  placeholder="Minimal 8 karakter"
-                  {...field}
-                />
-              </FormControl>
-
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="phone"
+          name={"phone" as Path<T>}
           render={({ field }) => (
             <FormItem>
               <FormLabel>No. HP</FormLabel>
@@ -144,7 +156,7 @@ export function UserForm({
 
         <FormField
           control={form.control}
-          name="address"
+          name={"address" as Path<T>}
           render={({ field }) => (
             <FormItem>
               <FormLabel>Alamat</FormLabel>
@@ -164,7 +176,7 @@ export function UserForm({
 
         <FormField
           control={form.control}
-          name="roleId"
+          name={"roleId" as Path<T>}
           render={({ field }) => (
             <FormItem>
               <FormLabel>Role</FormLabel>
@@ -205,7 +217,7 @@ export function UserForm({
         {roleId === 3 && (
           <FormField
             control={form.control}
-            name="parentId"
+            name={"parentId" as Path<T>}
             render={({ field }) => (
               <FormItem>
                 <FormLabel>

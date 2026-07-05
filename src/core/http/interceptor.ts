@@ -28,8 +28,7 @@ export function setupInterceptors(
     (response) => response,
 
     (error: AxiosError<any>) => {
-      const status =
-        error.response?.status ?? 500
+      const status = error.response?.status ?? 500
 
       const message =
         error.response?.data?.message ??

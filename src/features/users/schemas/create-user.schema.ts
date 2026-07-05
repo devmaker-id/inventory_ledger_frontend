@@ -1,41 +1,16 @@
 import { z } from 'zod'
 
-export const createUserSchema = z.object({
-  name: z
-    .string()
-    .trim()
-    .min(1, 'Nama wajib diisi'),
+import { userSchema } from './user.schema'
 
-  email: z
-    .string()
-    .trim()
-    .email('Format email tidak valid'),
+export const createUserSchema = z.object({
+  ...userSchema,
 
   password: z
     .string()
-    .min(8, 'Password minimal 8 karakter'),
-
-  phone: z
-    .string()
-    .trim()
-    .optional(),
-
-  address: z
-    .string()
-    .trim()
-    .optional(),
-
-  roleId: z
-    .number()
-    .int()
-    .positive('Role wajib dipilih'),
-
-  parentId: z
-    .number()
-    .int()
-    .positive()
-    .nullable()
-    .optional(),
+    .min(
+      8,
+      'Password minimal 8 karakter',
+    ),
 })
 
 export type CreateUserSchema = z.infer<

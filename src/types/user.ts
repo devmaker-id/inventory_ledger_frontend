@@ -1,3 +1,8 @@
+export type Role = {
+  id: number
+  name: string
+}
+
 export interface User {
   id: number
   name: string
@@ -5,6 +10,7 @@ export interface User {
   phone: string | null
   address: string | null
   roleId: number
+  role: Role
   parentId: number | null
   isActive: boolean
   createdAt: string

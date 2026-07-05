@@ -1,12 +1,37 @@
 'use client'
 
-import { Button } from '@/components/ui/button'
-import { UsersTable } from '../components/users-table'
 import { useState } from 'react'
+
+import { Button } from '@/components/ui/button'
+
+import { UsersTable } from '../components/users-table'
 import { CreateUserDialog } from '../components/create-user-dialog'
+import { UpdateUserDialog } from '../components/update-user-dialog'
 
 export function UsersPage() {
-  const [open, setOpen] = useState(false)
+  const [createOpen, setCreateOpen] =
+    useState(false)
+
+  const [updateOpen, setUpdateOpen] =
+    useState(false)
+
+  const [selectedUserId, setSelectedUserId] =
+    useState<number | null>(null)
+
+  const handleEdit = (id: number) => {
+    setSelectedUserId(id)
+    setUpdateOpen(true)
+  }
+
+  const handleUpdateOpenChange = (
+    open: boolean,
+  ) => {
+    setUpdateOpen(open)
+
+    if (!open) {
+      setSelectedUserId(null)
+    }
+  }
 
   return (
     <div className="space-y-6">
@@ -21,13 +46,33 @@ export function UsersPage() {
           </p>
         </div>
 
-        <Button onClick={() => setOpen(true)}>
+        <Button
+          onClick={() =>
+            setCreateOpen(true)
+          }
+        >
           Tambah User
         </Button>
-        <CreateUserDialog open={open} onOpenChange={setOpen} />
       </div>
 
-      <UsersTable />
+      <UsersTable
+        onEdit={handleEdit}
+      />
+
+      <CreateUserDialog
+        open={createOpen}
+        onOpenChange={setCreateOpen}
+      />
+
+      {selectedUserId !== null && (
+        <UpdateUserDialog
+          id={selectedUserId}
+          open={updateOpen}
+          onOpenChange={
+            handleUpdateOpenChange
+          }
+        />
+      )}
     </div>
   )
 }

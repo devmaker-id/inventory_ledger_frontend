@@ -9,8 +9,6 @@ export function useUsers() {
     queryKey: ['users'],
     queryFn: getUsers,
   })
-
-//   console.log('useUsers query', query)
-
+  
   return query
 }
