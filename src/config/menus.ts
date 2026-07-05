@@ -1,5 +1,6 @@
 import {
   Boxes,
+  UsersRound,
   LayoutDashboard,
   ScrollText,
   ChartColumn,
@@ -9,6 +10,14 @@ import {
 import { ROLES } from '@/lib/roles'
 
 export const menus = [
+  {
+    label: 'User Management',
+    href: '/users',
+    icon: UsersRound,
+    roles: [
+      ROLES.OWNER,
+    ],
+  },
   {
     label: 'Dashboard',
     href: '/dashboard',

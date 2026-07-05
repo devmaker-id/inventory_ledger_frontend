@@ -1,3 +1,9 @@
+export const RoleId = {
+  OWNER: 1,
+  DISTRIBUTOR: 2,
+  RETAIL: 3,
+} as const
+
 export const ROLES = {
   OWNER: 'OWNER',
   DISTRIBUTOR: 'DISTRIBUTOR',
@@ -6,6 +12,7 @@ export const ROLES = {
 
 export const ROLE_ROUTES = {
   OWNER: [
+    '/users',
     '/dashboard',
     '/inventory',
     '/ledger',
