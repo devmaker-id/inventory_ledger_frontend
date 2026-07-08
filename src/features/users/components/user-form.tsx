@@ -84,6 +84,7 @@ export function UserForm<
                 <Input
                   placeholder="Nama lengkap"
                   {...field}
+                  value={field.value ?? ''}
                 />
               </FormControl>
 
@@ -104,6 +105,7 @@ export function UserForm<
                   type="email"
                   placeholder="email@example.com"
                   {...field}
+                  value={field.value ?? ''}
                 />
               </FormControl>
 
@@ -125,6 +127,7 @@ export function UserForm<
                     type="password"
                     placeholder="Minimal 8 karakter"
                     {...field}
+                    value={field.value ?? ''}
                   />
                 </FormControl>
 

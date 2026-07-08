@@ -4,10 +4,18 @@ import { useQuery } from '@tanstack/react-query'
 
 import { getUsers } from '../api/get-users'
 
-export function useUsers() {
+type UseUserParams = {
+  page?: number
+  limit?: number
+  search?: string
+}
+
+export function useUsers(
+  params: UseUserParams
+) {
   const query = useQuery({
-    queryKey: ['users'],
-    queryFn: getUsers,
+    queryKey: ['users', params],
+    queryFn: () => getUsers(params),
   })
   
   return query

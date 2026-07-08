@@ -5,6 +5,7 @@ import {
   ScrollText,
   ChartColumn,
   User,
+  ShoppingCart,
 } from 'lucide-react'
 
 import { ROLES } from '@/lib/roles'
@@ -36,6 +37,24 @@ export const menus = [
       ROLES.OWNER,
       ROLES.DISTRIBUTOR,
       ROLES.RETAIL,
+    ],
+  },
+  {
+    label: 'Sales',
+    href: '/sales',
+    icon: ShoppingCart,
+    roles: [
+      ROLES.RETAIL,
+      ROLES.DISTRIBUTOR,
+    ],
+  },
+  {
+    label: 'Stocks',
+    href: '/stocks',
+    icon: Boxes,
+    roles: [
+      ROLES.OWNER,
+      ROLES.DISTRIBUTOR,
     ],
   },
   {

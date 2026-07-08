@@ -4,7 +4,6 @@ export async function getSummary() {
   const response = await api.get(
     '/analytics/summary',
   )
-
   return response.data.data
 }
 

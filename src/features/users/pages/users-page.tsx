@@ -3,34 +3,38 @@
 import { useState } from 'react'
 
 import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
 
 import { UsersTable } from '../components/users-table'
 import { CreateUserDialog } from '../components/create-user-dialog'
 import { UpdateUserDialog } from '../components/update-user-dialog'
+import { UserDetailDialog } from '../components/user-detail-dialog'
+import { DeleteUserDialog } from '../components/delete-user-dialog'
+
+import { useDebounce } from '../hooks/use-debounce'
 
 export function UsersPage() {
-  const [createOpen, setCreateOpen] =
-    useState(false)
+  const [search, setSearch] = useState('')
+  const debouncedSearch = useDebounce(search, 500)
+  
+  const [createOpen, setCreateOpen] = useState(false)
+  const [detailOpen, setDetailOpen] = useState(false)
+  const [updateOpen, setUpdateOpen] = useState(false)
+  const [deleteOpen, setDeleteOpen] = useState(false)
 
-  const [updateOpen, setUpdateOpen] =
-    useState(false)
-
-  const [selectedUserId, setSelectedUserId] =
-    useState<number | null>(null)
+  const [selectedUserId, setSelectedUserId] = useState<number | null>(null)
 
   const handleEdit = (id: number) => {
     setSelectedUserId(id)
     setUpdateOpen(true)
   }
-
-  const handleUpdateOpenChange = (
-    open: boolean,
-  ) => {
-    setUpdateOpen(open)
-
-    if (!open) {
-      setSelectedUserId(null)
-    }
+  const handleDetail = (id: number) => {
+    setSelectedUserId(id)
+    setDetailOpen(true)
+  }
+  const handleDelete = (id: number) => {
+    setSelectedUserId(id)
+    setDeleteOpen(true)
   }
 
   return (
@@ -55,8 +59,22 @@ export function UsersPage() {
         </Button>
       </div>
 
+      <div className="flex items-center justify-between">
+        <Input
+          className="max-w-sm"
+          placeholder="Cari nama atau email..."
+          value={search}
+          onChange={(e) =>
+            setSearch(e.target.value)
+          }
+        />
+      </div>
+
       <UsersTable
+        search={debouncedSearch}
+        onDetail={handleDetail}
         onEdit={handleEdit}
+        onDelete={handleDelete}
       />
 
       <CreateUserDialog
@@ -64,13 +82,42 @@ export function UsersPage() {
         onOpenChange={setCreateOpen}
       />
 
-      {selectedUserId !== null && (
+      {selectedUserId && (
+        <UserDetailDialog
+          id={selectedUserId}
+          open={detailOpen}
+          onOpenChange={(open) => {
+            setDetailOpen(open)
+            if(!open){
+              setSelectedUserId(null)
+            }
+          }}
+        />
+      )}
+
+      {selectedUserId && (
         <UpdateUserDialog
           id={selectedUserId}
           open={updateOpen}
-          onOpenChange={
-            handleUpdateOpenChange
-          }
+          onOpenChange={(open) => {
+            setUpdateOpen(open)
+            if (!open) {
+              setSelectedUserId(null)
+            }
+          }}
+        />
+      )}
+
+      {selectedUserId && (
+        <DeleteUserDialog
+          id={selectedUserId}
+          open={deleteOpen}
+          onOpenChange={(open) => {
+            setDeleteOpen(true)
+            if(!open){
+              setSelectedUserId(null)
+            }
+          }}
         />
       )}
     </div>

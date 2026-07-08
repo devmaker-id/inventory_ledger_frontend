@@ -21,9 +21,11 @@ type Summary = {
 }
 
 type LowStock = {
-  id: number
-  name: string
-  stock: number
+  userId: number
+  userName: string
+  productId: number
+  productName: string
+  qty: number
 }
 
 type Transaction = {
@@ -147,17 +149,19 @@ export default function DashboardPage() {
 
             {lowStock.map((item) => (
               <div
-                key={item.id}
+                key={item.userId}
                 className="flex items-center justify-between rounded-xl border p-4"
               >
                 <div>
                   <p className="font-medium">
-                    {item.name}
+                    {item.userName}
                   </p>
                 </div>
 
                 <div className="text-sm font-semibold text-red-500">
-                  {item.stock}
+                  {item.productName}
+                  {': '}
+                  {item.qty}
                 </div>
               </div>
             ))}

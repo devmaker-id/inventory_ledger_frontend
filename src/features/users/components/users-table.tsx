@@ -20,16 +20,26 @@ import {
 import { useUsers } from '../hooks/use-users'
 
 type UsersTableProps = {
+  search: string
+  onDetail: (id: number) => void
   onEdit: (id: number) => void
+  onDelete: (id: number) => void
 }
 
 export function UsersTable({
+  search,
+  onDetail,
   onEdit,
+  onDelete,
 }: UsersTableProps) {
   const {
     data,
     isLoading,
-  } = useUsers()
+  } = useUsers({
+    page: 1,
+    limit: 10,
+    search,
+  })
 
   const users = data?.data ?? []
 
@@ -78,6 +88,9 @@ export function UsersTable({
                   size="icon"
                   variant="outline"
                   title="Detail"
+                  onClick={() =>
+                    onDetail(user.id)
+                  }
                 >
                   <Eye className="size-4" />
                 </Button>
@@ -97,6 +110,9 @@ export function UsersTable({
                   size="icon"
                   variant="destructive"
                   title="Hapus"
+                  onClick={() =>
+                    onDelete(user.id)
+                  }
                 >
                   <Trash2 className="size-4" />
                 </Button>

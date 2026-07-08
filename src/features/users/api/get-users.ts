@@ -2,6 +2,16 @@ import { http } from '@/core/http'
 
 import type { UsersResponse } from '../types/user.types'
 
-export function getUsers() {
-  return http.get<UsersResponse>('/users')
+type GetUserParams = {
+  page?: number
+  limit?: number
+  search?: string
+}
+
+export function getUsers(
+  params: GetUserParams
+) {
+  return http.get<UsersResponse>('/users', {
+    params
+  })
 }
