@@ -17,7 +17,7 @@ export function SidebarContent({
   const pathname = usePathname()
 
   return (
-    <nav className="flex flex-1 flex-col gap-2 p-4">
+    <nav className="flex flex-1 flex-col gap-1 p-4">
       {menus.map((menu) => {
         const Icon = menu.icon
 

@@ -16,20 +16,20 @@ export function AppLayout({
     useState(false)
 
   return (
-    <div className="flex min-h-screen bg-muted/30">
+    <div className="h-screen overflow-hidden bg-muted/30">
       <Sidebar
         mobileOpen={mobileOpen}
         onMobileOpenChange={setMobileOpen}
       />
 
-      <div className="flex min-w-0 flex-1 flex-col">
+      <div className="flex h-screen flex-col lg:ml-64">
         <Topbar
           onOpenSidebar={() =>
             setMobileOpen(true)
           }
         />
 
-        <main className="flex-1 p-6">
+        <main className="flex-1 overflow-y-auto p-6">
           {children}
         </main>
       </div>

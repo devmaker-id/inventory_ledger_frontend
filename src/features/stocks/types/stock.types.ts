@@ -95,3 +95,18 @@ export interface Retail {
   isActive: boolean
   parentId: number | null
 }
+export interface RetailSummary {
+  retailId: number
+  retailName: string
+  distributorName: string
+  totalTransactions: number
+  totalQty: number
+  totalRevenue: number
+}
+export interface TopProduct {
+  productId: number
+  productName: string
+  totalTransactions: number
+  totalQty: number
+  totalRevenue: number
+}

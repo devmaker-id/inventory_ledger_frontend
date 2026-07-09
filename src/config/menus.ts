@@ -6,6 +6,9 @@ import {
   ChartColumn,
   User,
   ShoppingCart,
+  Wallet,
+  Replace,
+  FileEdit,
 } from 'lucide-react'
 
 import { ROLES } from '@/lib/roles'
@@ -23,6 +26,44 @@ export const menus = [
     label: 'Dashboard',
     href: '/dashboard',
     icon: LayoutDashboard,
+    roles: [
+      ROLES.OWNER,
+      ROLES.DISTRIBUTOR,
+      ROLES.RETAIL,
+    ],
+  },
+  {
+    label: 'Adjusment Stok',
+    href: '/adjustment',
+    icon: FileEdit,
+    roles: [
+      ROLES.OWNER,
+    ],
+  },
+  {
+    label: 'Retu Stok',
+    href: '/return',
+    icon: Replace,
+    roles: [
+      ROLES.OWNER,
+      ROLES.DISTRIBUTOR,
+      ROLES.RETAIL,
+    ],
+  },
+  {
+    label: 'Settlement',
+    href: '/settlement',
+    icon: Wallet,
+    roles: [
+      ROLES.OWNER,
+      ROLES.DISTRIBUTOR,
+      ROLES.RETAIL,
+    ],
+  },
+  {
+    label: 'Summary',
+    href: '/summary',
+    icon: Boxes,
     roles: [
       ROLES.OWNER,
       ROLES.DISTRIBUTOR,
